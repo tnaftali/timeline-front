@@ -2,11 +2,11 @@
     <div class="assets" style="overflow-y: auto; overflow-x: hidden;">
         <div class="asset" *ngFor="let asset of assets; let i = index">
             <mat-form-field class="asset-input">
-                <input oninput="this.value = this.value.toUpperCase()" required class="input" maxlength="4" matInput placeholder="Symbol" [(ngModel)]="asset.symbol" />
+                <input oninput="this.value = this.value.toUpperCase()" required class="input" maxlength="4" matInput placeholder="Symbol" [(ngModel)]="asset.symbol" (ngModelChange)="validate()" />
             </mat-form-field>
             <mat-form-field class="asset-input">
                 <input numbersOnly required class="input" maxlength="3" min="1" max="100" matInput placeholder="Percentage"
-                    [(ngModel)]="asset.percentage" (input)="onValueChange()" />
+                    [(ngModel)]="asset.percentage" (ngModelChange)="validate()" />
             </mat-form-field>
             <button [disabled]="assets.length === 1" mat-icon-button (click)="deleteAsset(i)">
                 <mat-icon>delete</mat-icon>

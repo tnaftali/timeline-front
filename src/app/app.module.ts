@@ -10,6 +10,9 @@ import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssetsComponent } from './assets/assets.component';
 import { OnlyNumberDirective } from './directive/only-number.directive';
+// import { PortfolioMapperService } from './services/portfolio-mapper.service';
+import { PortfolioService } from './services/portfolio.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -39,13 +42,14 @@ export const MY_FORMATS = {
         AppComponent,
         PortfolioComponent,
         AssetsComponent,
-        OnlyNumberDirective
+        OnlyNumberDirective,
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         MatInputModule,
         FormsModule,
+        HttpClientModule,
         MatIconModule,
         MatCardModule,
         ReactiveFormsModule,

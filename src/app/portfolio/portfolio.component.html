@@ -5,24 +5,24 @@
         <div class="input-container">
             <mat-form-field>
                 <input required class="input" matInput placeholder="Initial Investment" [(ngModel)]="investment" name="investment"
-                    currencyMask />
+                    currencyMask (ngModelChange)="validate()" />
             </mat-form-field>
         </div>
         <span class="title-2">On</span>
         <div class="input-container">
             <mat-form-field>
-                <input required numbersOnly maxlength="10" class="input" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Date" [(ngModel)]="date" />
+                <input required numbersOnly maxlength="10" class="input" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Date" [(ngModel)]="date" (ngModelChange)="validate()" />
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </div>
         <span class="title-2">On The Following Assets</span>
-        <app-assets class="assets"></app-assets>
+        <app-assets [clearParentSubject]="clearParentSubject" (assetsEmitter)="getAssets($event)" (errorEmitter)="validateAssets($event)" class="assets"></app-assets>
         <div class="footer-text-container">
             <span class="error" *ngIf="error">{{errorMessage}}</span>
         </div>
         <div class="buttons-container">
-            <button class="button" [disabled]="error" mat-button color="primary">Calculate</button>
+            <button class="button" [disabled]="error" (click)="calculate()" mat-button color="primary">Calculate</button>
             <button class="button" (click)="clear()" mat-button>Clear</button>
         </div>
     </mat-card>
