@@ -1,0 +1,44 @@
+.add-button {
+  position: fixed;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer-container {
+  margin-top: 3vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.assets {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 25vh;
+}
+
+.asset {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.asset-input {
+  width: 40%;
+}
+
+.input {
+  font-size: 30px;
+}

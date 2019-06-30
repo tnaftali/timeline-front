@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 98vh;
+}
+
+.card {
+  height: 75vh;
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.input-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.input {
+  font-size: 30px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.button {
+  font-size: 1.5em;
+  width: 48%;
+}
+
+.buttons-container {
+  display: flex;
+  height: 15vh;
+  width: 100%;
+  justify-content: space-between;
+}

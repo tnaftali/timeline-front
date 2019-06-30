@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+  background-color: #FAFAFA;
+  font-family: 'Hind', sans-serif !important;
+}
+
+.mat-form-, .mat-button, .mat-card, .mat-form-field {
+    font-family: 'Hind', sans-serif !important;
+}
+
+.mat-form-field-suffix {
+    font-size: 1.5em !important;
+}
+
+.title-2 {
+  font-size: 1.5em;
+}
+
+.error {
+  color: red;
+  font-size: 15px;
+}

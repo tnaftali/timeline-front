@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="assets" style="overflow-y: auto; overflow-x: hidden;">
+        <div class="asset" *ngFor="let asset of assets; let i = index">
+            <mat-form-field class="asset-input">
+                <input oninput="this.value = this.value.toUpperCase()" required class="input" maxlength="4" matInput placeholder="Symbol" [(ngModel)]="asset.symbol" />
+            </mat-form-field>
+            <mat-form-field class="asset-input">
+                <input numbersOnly required class="input" maxlength="3" min="1" max="100" matInput placeholder="Percentage"
+                    [(ngModel)]="asset.percentage" (input)="onValueChange()" />
+            </mat-form-field>
+            <button [disabled]="assets.length === 1" mat-icon-button (click)="deleteAsset(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="footer-container">
+        <div class="footer-text-container">
+            <span class="title-2">Total Percentage: {{percentage}}%</span>
+            <span class="error" *ngIf="error">{{errorMessage}}</span>
+        </div>
+        <div class="button-container">
+            <button mat-icon-button (click)="addAsset()">
+                <mat-icon>add_icon</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
