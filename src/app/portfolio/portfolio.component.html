@@ -1,29 +1,103 @@
 <div class="container">
     <h1>Portfolio Assets Earnings Calculator</h1>
-    <mat-card class="card">
-        <span class="title-2">If I had invested</span>
-        <div class="input-container">
-            <mat-form-field>
-                <input required class="input" matInput placeholder="Initial Investment" [(ngModel)]="investment" name="investment"
-                    currencyMask (ngModelChange)="validate()" />
-            </mat-form-field>
+    <mat-card class="card" *ngIf="!showResponse">
+        <div class="form" *ngIf="!showSpinner">
+            <span class="title-2">If I had invested</span>
+            <div class="input-container">
+                <mat-form-field>
+                    <input required class="input" matInput placeholder="Initial Investment" [(ngModel)]="investment"
+                        name="investment" currencyMask (ngModelChange)="validate()" />
+                </mat-form-field>
+            </div>
+            <span class="title-2">On</span>
+            <div class="input-container">
+                <mat-form-field>
+                    <input required numbersOnly maxlength="10" class="input" matInput [min]="minDate" [max]="maxDate"
+                        [matDatepicker]="picker" placeholder="Date" [(ngModel)]="date" (ngModelChange)="validate()" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <span class="title-2">On The Following Assets</span>
+            <app-assets *ngIf="!showResponse" [clearParentSubject]="clearParentSubject" (assetsEmitter)="getAssets($event)"
+                (errorEmitter)="validateAssets($event)" class="assets"></app-assets>
+            <div class="footer-text-container">
+                <span class="error" *ngIf="error">{{errorMessage}}</span>
+            </div>
+            <div class="buttons-container">
+                <button class="button" [disabled]="error" (click)="calculate()" mat-button
+                    color="primary">Calculate</button>
+                <button class="button" (click)="clear()" mat-button>Clear</button>
+            </div>
         </div>
-        <span class="title-2">On</span>
-        <div class="input-container">
-            <mat-form-field>
-                <input required numbersOnly maxlength="10" class="input" matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" placeholder="Date" [(ngModel)]="date" (ngModelChange)="validate()" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+        <div *ngIf="showSpinner" class="spinner">
+            <span class="title-2">Getting values...</span>
+            <mat-spinner></mat-spinner>
         </div>
-        <span class="title-2">On The Following Assets</span>
-        <app-assets [clearParentSubject]="clearParentSubject" (assetsEmitter)="getAssets($event)" (errorEmitter)="validateAssets($event)" class="assets"></app-assets>
-        <div class="footer-text-container">
-            <span class="error" *ngIf="error">{{errorMessage}}</span>
+    </mat-card>
+    <mat-card class="results-card" *ngIf="showResponse">
+        <div *ngIf="!showResponseError">
+            <span class="title-2">Initial Investment: <b>${{response.initial_balance}}</b></span>
+            <br>
+            <span class="title-2">Start Date: <b>{{response.initial_date}}</b></span>
+            <br>
+            <span class="title-2">
+                Final Balance: <b><span *ngIf="response.initial_balance < response.final_balance"
+                        class="color-positive">${{response.final_balance}}</span><span
+                        *ngIf="response.initial_balance > response.final_balance"
+                        class="color-negative">${{response.final_balance}}</span><span
+                        *ngIf="response.initial_balance === response.final_balance">${{response.final_balance}}</span></b>
+            </span>
+            <div class="assets-response">
+                <div class="asset-response flex flex-column" *ngFor="let asset of response.assets">
+                    <span class="title-1"><b>{{asset.symbol}}</b></span>
+                    <br>
+                    <br>
+                    <span class="title-2">
+                        The stock price went from <b>${{asset.initial.price}}</b> on <b>{{asset.initial.date}}</b> to
+                        <b>${{asset.final.price}}</b> on <b>{{asset.final.date}}</b>, a
+                        variation of
+                        <span class="color-positive" *ngIf="asset.variation >= 0">
+                            <b>{{asset.variation}}%</b>
+                        </span>
+                        <span class="color-negative" *ngIf="asset.variation < 0">
+                            <b>{{asset.variation}}%</b>
+                        </span>
+                    </span>
+                    <br>
+                    <span class="title-2">
+                        If <b>{{asset.allocation}}%</b> of my initial investment, <b>${{asset.initial.balance}}</b> went
+                        to
+                        <b>{{asset.symbol}}</b>,
+                        my balance would be
+                        <span class="color-positive" *ngIf="asset.earnings >= 0">
+                            <b>${{asset.final.balance}}</b>
+                        </span><span class="color-negative" *ngIf="asset.earnings < 0">
+                            <b>${{asset.final.balance}}</b>
+                        </span>, which means I would have <span *ngIf="asset.earnings >= 0">
+                            earned
+                        </span>
+                        <span *ngIf="asset.earnings < 0">
+                            lost
+                        </span>
+                        <span class="color-positive" *ngIf="asset.earnings >= 0">
+                            <b>${{asset.earnings}}</b>
+                        </span>
+                        <span class="color-negative" *ngIf="asset.earnings < 0">
+                            <b>${{asset.earnings.toString().replace('-', '')}}</b>
+                        </span>
+                    </span>
+                    <mat-divider class="divider"></mat-divider>
+                </div>
+            </div>
         </div>
-        <div class="buttons-container">
-            <button class="button" [disabled]="error" (click)="calculate()" mat-button color="primary">Calculate</button>
-            <button class="button" (click)="clear()" mat-button>Clear</button>
+        <div *ngIf="showResponseError" class="flex flex-column" style="justify-content: center;align-items: center;">
+            <span class="title-2 color-negative">
+                {{responseError}}
+            </span>
+        </div>
+        <div class="back-button-container">
+            <button class="button back-button" (click)="again()" mat-button>Again</button>
         </div>
     </mat-card>
 </div>

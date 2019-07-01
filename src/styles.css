@@ -14,6 +14,10 @@ body {
     font-size: 1.5em !important;
 }
 
+.title-1 {
+  font-size: 2em;
+}
+
 .title-2 {
   font-size: 1.5em;
 }
@@ -21,4 +25,20 @@ body {
 .error {
   color: red;
   font-size: 15px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.color-positive {
+    color: #38751C;
+}
+
+.color-negative {
+    color: #e20404;
 }

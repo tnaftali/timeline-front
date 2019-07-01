@@ -66,6 +66,7 @@ export class AssetsComponent implements OnInit {
 
     deleteAsset(index: number) {
         this.assets.splice(index, 1);
+        this.validate();
     }
 
     updatePercentage() {
